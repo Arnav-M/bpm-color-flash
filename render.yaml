@@ -1,0 +1,13 @@
+# Deploy on https://render.com — New → Blueprint → connect this repo
+services:
+  - type: web
+    name: color-flash
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: NODE_VERSION
+        value: "20"

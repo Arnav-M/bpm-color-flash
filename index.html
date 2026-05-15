@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>Concert Color Flash</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="flash-layer" class="flash-layer" aria-hidden="true"></div>
+
+  <main class="viewer">
+    <p class="status-pill sync-pill" id="sync-pill">Connecting…</p>
+    <p class="status-pill" id="status-pill">Paused</p>
+    <p class="bpm-readout" id="bpm-readout">120 BPM</p>
+    <p class="hint">Hold your phone up. Everyone flashes in sync with the host BPM.</p>
+    <p class="hint subtle">Photosensitive viewers: lower BPM or leave if uncomfortable.</p>
+  </main>
+
+  <button type="button" class="admin-trigger" id="admin-trigger" title="Host controls" aria-label="Open host controls">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Zm8.94-2.34-.97-.56a6.52 6.52 0 0 0 0-1.2l.97-.56 1.12-1.94-1.73-3-1.95 1.12-.56-.97a6.52 6.52 0 0 0-1.04-.6l-.09-1.12h-3.46l-.09 1.12c-.36.14-.7.34-1.04.6l-.56.97-1.95-1.12-1.73 3 1.12 1.94.97.56c-.08.4-.08.8 0 1.2l-.97.56-1.12 1.94 1.73 3 1.95-1.12.56.97c.34.26.68.46 1.04.6l.09 1.12h3.46l.09-1.12c.36-.14.7-.34 1.04-.6l.56-.97 1.95 1.12 1.73-3-1.12-1.94Z"/>
+    </svg>
+  </button>
+
+  <dialog class="modal" id="login-modal">
+    <form method="dialog" class="modal-card" id="login-form">
+      <h2>Host access</h2>
+      <p class="modal-copy">Only the host can set concert BPM. Everyone else follows automatically.</p>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="password-input" autocomplete="current-password" required />
+      </label>
+      <p class="error" id="login-error" hidden>Incorrect password.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" id="login-cancel">Cancel</button>
+        <button type="submit" class="btn primary">Unlock</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="admin-modal">
+    <form method="dialog" class="modal-card admin-card" id="admin-form">
+      <header class="admin-header">
+        <h2>Concert host</h2>
+        <button type="button" class="btn ghost small" id="admin-lock">Lock</button>
+      </header>
+
+      <label class="field">
+        <span>Tempo <strong id="bpm-label">120 BPM</strong> <em class="range-tag">40–220</em></span>
+        <input type="range" id="bpm-slider" min="40" max="220" step="1" value="120" />
+      </label>
+
+      <div class="presets" aria-label="BPM presets">
+        <button type="button" class="btn preset" data-bpm="60">Ballad 60</button>
+        <button type="button" class="btn preset" data-bpm="95">Hip-hop 95</button>
+        <button type="button" class="btn preset" data-bpm="120">Pop 120</button>
+        <button type="button" class="btn preset" data-bpm="128">House 128</button>
+        <button type="button" class="btn preset" data-bpm="174">DnB 174</button>
+      </div>
+
+      <label class="field checkbox">
+        <input type="checkbox" id="running-toggle" />
+        <span>Flash on beat (live)</span>
+      </label>
+
+      <label class="field">
+        <span>Color style</span>
+        <select id="color-mode">
+          <option value="strobe">White strobe (classic)</option>
+          <option value="spectrum">Spectrum per beat</option>
+          <option value="gold">Gold / orange</option>
+          <option value="pair">Red / blue</option>
+          <option value="pair-gb">Green / magenta</option>
+          <option value="random">Pseudo-random (synced)</option>
+        </select>
+      </label>
+
+      <p class="modal-copy subtle">
+        Audience link (no controls):<br />
+        <code class="share-url" id="share-url"></code>
+      </p>
+
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" id="admin-close">Close</button>
+        <button type="submit" class="btn primary">Done</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
