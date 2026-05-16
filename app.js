@@ -11,7 +11,6 @@ const viewerOnly = params.has("viewer");
 
 const flashLayer = document.getElementById("flash-layer");
 const statusPill = document.getElementById("status-pill");
-const bpmReadout = document.getElementById("bpm-readout");
 const syncPill = document.getElementById("sync-pill");
 const adminTrigger = document.getElementById("admin-trigger");
 
@@ -117,7 +116,6 @@ function applyServerState(next) {
 }
 
 function updateUi() {
-  bpmReadout.textContent = `${serverState.bpm} BPM`;
   statusPill.textContent = serverState.running ? "Live" : "Paused";
   statusPill.classList.toggle("live", serverState.running);
   document.body.classList.toggle("flashing", serverState.running);
