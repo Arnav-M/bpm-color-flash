@@ -38,18 +38,41 @@ body {
 .viewer {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   align-items: center;
-  justify-content: center;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 2rem;
   text-align: center;
   pointer-events: none;
 }
 
+.viewer-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.show-title {
+  margin: 0;
+  align-self: center;
+  font-size: clamp(2.75rem, 14vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.75);
+}
+
+.viewer-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .status-pill {
-  margin: 0 0 0.75rem;
+  margin: 0;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -63,10 +86,6 @@ body {
 .status-pill.live {
   border-color: rgba(124, 255, 168, 0.45);
   color: #b8ffd4;
-}
-
-.sync-pill {
-  margin-bottom: 0.45rem;
 }
 
 .sync-pill.sync-ok {
@@ -118,7 +137,7 @@ body {
 }
 
 .hint {
-  margin: 1.5rem 0 0;
+  margin: 0;
   max-width: 28rem;
   font-size: 0.9rem;
   color: var(--muted);
