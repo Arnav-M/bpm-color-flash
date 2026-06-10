@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0a0a0f" />
-  <title>Concert Color Flash</title>
+  <title>Color Flash</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,7 +19,7 @@
       <p class="status-pill sync-pill" id="sync-pill">Connecting…</p>
       <p class="status-pill" id="status-pill">Paused</p>
     </div>
-    <h1 class="show-title">Neha Vivek</h1>
+    <h1 class="show-title" id="show-title">Your Event</h1>
     <div class="viewer-footer">
       <p class="hint" id="main-hint">Hold your phone up. Groove.</p>
       <p class="hint subtle" id="main-hint-sub">Photosensitive? Leave if flashing is uncomfortable.</p>
@@ -32,7 +35,7 @@
   <dialog class="modal" id="login-modal">
     <form method="dialog" class="modal-card" id="login-form">
       <h2>Host access</h2>
-      <p class="modal-copy">Only the host can set concert BPM. Everyone else follows automatically.</p>
+      <p class="modal-copy">Only the host can control tempo and on-screen text. Everyone else follows automatically.</p>
       <label class="field">
         <span>Password</span>
         <input type="password" id="password-input" autocomplete="current-password" required />
@@ -48,9 +51,25 @@
   <dialog class="modal" id="admin-modal">
     <form method="dialog" class="modal-card admin-card" id="admin-form">
       <header class="admin-header">
-        <h2>Concert host</h2>
+        <h2>Event host</h2>
         <button type="button" class="btn ghost small" id="admin-lock">Lock</button>
       </header>
+
+      <fieldset class="field-group">
+        <legend>Screen text <em class="range-tag">synced to every phone</em></legend>
+        <label class="field">
+          <span>Main title (center)</span>
+          <input type="text" id="show-title-input" maxlength="48" placeholder="Your Event" />
+        </label>
+        <label class="field">
+          <span>Audience hint</span>
+          <input type="text" id="hint-main-input" maxlength="80" placeholder="Hold your phone up. Groove." />
+        </label>
+        <label class="field">
+          <span>Safety note</span>
+          <input type="text" id="hint-sub-input" maxlength="120" placeholder="Photosensitive? Leave if flashing is uncomfortable." />
+        </label>
+      </fieldset>
 
       <label class="field">
         <span>Tempo <strong id="bpm-label">120 BPM</strong> <em class="range-tag">40–220</em></span>

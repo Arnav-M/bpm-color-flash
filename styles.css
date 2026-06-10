@@ -1,4 +1,4 @@
-*,
+﻿*,
 *::before,
 *::after {
   box-sizing: border-box;
@@ -207,12 +207,35 @@ body {
   font-size: 0.8rem;
 }
 
+.field-group {
+  margin: 0 0 1rem;
+  padding: 0.85rem 0.9rem 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.field-group legend {
+  padding: 0 0.35rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
 .field {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   margin-bottom: 1rem;
   font-size: 0.9rem;
+}
+
+.field input[type="text"] {
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font: inherit;
 }
 
 .field span {
@@ -227,6 +250,12 @@ body {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text);
   font: inherit;
+}
+
+.field select,
+.field select option {
+  background: #000;
+  color: #fff;
 }
 
 .field input[type="range"] {

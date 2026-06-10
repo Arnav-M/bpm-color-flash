@@ -1,4 +1,4 @@
-const http = require("http");
+﻿const http = require("http");
 const path = require("path");
 const crypto = require("crypto");
 const express = require("express");
@@ -16,12 +16,21 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.static(__dirname));
 
+const DEFAULT_DISPLAY = {
+  showTitle: "Your Event",
+  hintMain: "Hold your phone up. Groove.",
+  hintSub: "Photosensitive? Leave if flashing is uncomfortable.",
+};
+
 let state = {
   bpm: 120,
   running: false,
   colorMode: "spectrum",
   epochMs: 0,
   beatOffset: 0,
+  showTitle: DEFAULT_DISPLAY.showTitle,
+  hintMain: DEFAULT_DISPLAY.hintMain,
+  hintSub: DEFAULT_DISPLAY.hintSub,
 };
 
 let listenerCount = 0;
@@ -58,6 +67,10 @@ function verifyPassword(password) {
   return hash === ADMIN_HASH;
 }
 
+function trimDisplay(value, maxLen) {
+  return String(value ?? "").trim().slice(0, maxLen);
+}
+
 function publicState() {
   return {
     bpm: state.bpm,
@@ -65,6 +78,9 @@ function publicState() {
     colorMode: state.colorMode,
     epochMs: state.epochMs,
     beatOffset: state.beatOffset,
+    showTitle: state.showTitle,
+    hintMain: state.hintMain,
+    hintSub: state.hintSub,
     bpmMin: BPM_MIN,
     bpmMax: BPM_MAX,
     listeners: listenerCount,
@@ -109,6 +125,15 @@ app.post("/api/state", (req, res) => {
   }
   if (patch.running === true) startShow();
   if (patch.running === false) stopShow();
+  if (patch.showTitle !== undefined) {
+    state.showTitle = trimDisplay(patch.showTitle, 48) || DEFAULT_DISPLAY.showTitle;
+  }
+  if (patch.hintMain !== undefined) {
+    state.hintMain = trimDisplay(patch.hintMain, 80) || DEFAULT_DISPLAY.hintMain;
+  }
+  if (patch.hintSub !== undefined) {
+    state.hintSub = trimDisplay(patch.hintSub, 120) || DEFAULT_DISPLAY.hintSub;
+  }
 
   broadcastState();
   res.json({ ok: true, serverTime: Date.now(), state: publicState() });

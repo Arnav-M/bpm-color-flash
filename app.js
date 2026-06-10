@@ -1,4 +1,4 @@
-import { BPM_MIN, BPM_MAX, beatIndex, colorForBeat } from "./sync.js";
+﻿import { BPM_MIN, BPM_MAX, beatIndex, colorForBeat } from "./sync.js";
 
 const DEFAULT_PASSWORD_HASH =
   "02fa5110100a0d099bce9753f947d9ee4ab7eba13e17bbfd86a7431d98740c0f";
@@ -13,6 +13,9 @@ const flashLayer = document.getElementById("flash-layer");
 const statusPill = document.getElementById("status-pill");
 const syncPill = document.getElementById("sync-pill");
 const adminTrigger = document.getElementById("admin-trigger");
+const showTitleEl = document.getElementById("show-title");
+const mainHintEl = document.getElementById("main-hint");
+const mainHintSubEl = document.getElementById("main-hint-sub");
 
 const loginModal = document.getElementById("login-modal");
 const loginForm = document.getElementById("login-form");
@@ -30,6 +33,9 @@ const adminLock = document.getElementById("admin-lock");
 const adminClose = document.getElementById("admin-close");
 const shareUrl = document.getElementById("share-url");
 const presetButtons = document.querySelectorAll("[data-bpm]");
+const showTitleInput = document.getElementById("show-title-input");
+const hintMainInput = document.getElementById("hint-main-input");
+const hintSubInput = document.getElementById("hint-sub-input");
 
 let serverState = {
   bpm: 120,
@@ -37,6 +43,9 @@ let serverState = {
   colorMode: "spectrum",
   epochMs: 0,
   beatOffset: 0,
+  showTitle: "Your Event",
+  hintMain: "Hold your phone up. Groove.",
+  hintSub: "Photosensitive? Leave if flashing is uncomfortable.",
 };
 
 let clockOffset = 0;
@@ -115,10 +124,19 @@ function applyServerState(next) {
   rescheduleBeats();
 }
 
+function updateDisplayCopy() {
+  showTitleEl.textContent = serverState.showTitle || "Your Event";
+  mainHintEl.textContent = serverState.hintMain || "Hold your phone up. Groove.";
+  mainHintSubEl.textContent =
+    serverState.hintSub || "Photosensitive? Leave if flashing is uncomfortable.";
+  document.title = `${serverState.showTitle || "Color Flash"} · Color Flash`;
+}
+
 function updateUi() {
   statusPill.textContent = serverState.running ? "Live" : "Paused";
   statusPill.classList.toggle("live", serverState.running);
   document.body.classList.toggle("flashing", serverState.running);
+  updateDisplayCopy();
 
   if (!serverState.running) {
     flashLayer.style.backgroundColor = "#111";
@@ -241,6 +259,17 @@ function syncAdminForm() {
   bpmLabel.textContent = `${serverState.bpm} BPM`;
   runningToggle.checked = serverState.running;
   colorModeSelect.value = serverState.colorMode;
+  showTitleInput.value = serverState.showTitle || "";
+  hintMainInput.value = serverState.hintMain || "";
+  hintSubInput.value = serverState.hintSub || "";
+}
+
+function pushDisplayPatch() {
+  pushPatch({
+    showTitle: showTitleInput.value,
+    hintMain: hintMainInput.value,
+    hintSub: hintSubInput.value,
+  }).catch(() => {});
 }
 
 function openLogin() {
@@ -314,8 +343,13 @@ colorModeSelect.addEventListener("change", () => {
   pushPatch({ colorMode: colorModeSelect.value }).catch(() => {});
 });
 
+for (const input of [showTitleInput, hintMainInput, hintSubInput]) {
+  input.addEventListener("change", pushDisplayPatch);
+}
+
 adminForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  pushDisplayPatch();
   adminModal.close();
 });
 

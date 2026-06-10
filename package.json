@@ -1,6 +1,7 @@
-{
-  "name": "color-flash",
+﻿{
+  "name": "bpm-color-flash",
   "version": "1.0.0",
+  "description": "Synced BPM color flash for live events — host controls tempo; every audience phone flashes together.",
   "private": true,
   "engines": {
     "node": ">=18"

@@ -1,13 +1,17 @@
-# Deploy on https://render.com — New → Blueprint → connect this repo
+﻿# Render Blueprint — https://render.com/docs/blueprint-spec
+# Deploy: Render Dashboard → New → Blueprint → connect this repo
+# Then set ADMIN_PASSWORD in the service Environment tab.
+
 services:
   - type: web
-    name: color-flash
+    name: bpm-color-flash
     runtime: node
     plan: free
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/state
     envVars:
-      - key: ADMIN_PASSWORD
-        generateValue: true
       - key: NODE_VERSION
         value: "20"
+      - key: ADMIN_PASSWORD
+        sync: false
